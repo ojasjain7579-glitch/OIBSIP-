@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Online Examination</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Online Examination</h1>
+
+<div id="login">
+
+<h2>Login</h2>
+
+<input type="text" id="name" placeholder="Enter Name">
+
+<input type="password" id="password" placeholder="Password">
+
+<button onclick="startExam()">Login</button>
+
+</div>
+
+
+<div id="exam" style="display:none;">
+
+<h2>Welcome <span id="student"></span></h2>
+
+<h3>Time Left: <span id="time">60</span> sec</h3>
+
+
+<form id="quiz">
+
+
+<p>1. Java is a?</p>
+
+<input type="radio" name="q1" value="A"> Programming Language<br>
+<input type="radio" name="q1" value="B"> Database<br>
+
+
+<p>2. HTML is used for?</p>
+
+<input type="radio" name="q2" value="A"> Web Page Design<br>
+<input type="radio" name="q2" value="B"> Operating System<br>
+
+
+<p>3. CSS is used for?</p>
+
+<input type="radio" name="q3" value="A"> Styling<br>
+<input type="radio" name="q3" value="B"> Coding Java<br>
+
+
+<br>
+
+<button type="button" onclick="submitExam()">
+Submit Exam
+</button>
+
+</form>
+
+
+</div>
+
+
+<div id="result"></div>
+
+
+</div>
+
+
+<script>
+
+let timer;
+
+function startExam(){
+
+let name=document.getElementById("name").value;
+
+document.getElementById("student").innerHTML=name;
+
+document.getElementById("login").style.display="none";
+
+document.getElementById("exam").style.display="block";
+
+
+let time=60;
+
+timer=setInterval(function(){
+
+time--;
+
+document.getElementById("time").innerHTML=time;
+
+
+if(time==0){
+
+submitExam();
+
+}
+
+},1000);
+
+}
+
+
+
+function submitExam(){
+
+clearInterval(timer);
+
+
+let score=0;
+
+
+if(document.querySelector('input[name="q1"]:checked')?.value=="A")
+score++;
+
+if(document.querySelector('input[name="q2"]:checked')?.value=="A")
+score++;
+
+if(document.querySelector('input[name="q3"]:checked')?.value=="A")
+score++;
+
+
+document.getElementById("exam").style.display="none";
+
+
+document.getElementById("result").innerHTML=
+
+"<h2>Exam Completed</h2><h3>Your Score: "+score+"/3</h3>";
+
+}
+
+</script>
+
+
+</body>
+</html>

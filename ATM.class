@@ -1,0 +1,87 @@
+// Source code is decompiled from a .class file using FernFlower decompiler (from Intellij IDEA).
+package backend;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.Scanner;
+
+public class ATM {
+   static Scanner sc;
+
+   public ATM() {
+   }
+
+   public static void main(String[] var0) {
+      try {
+         Connection var1 = DBConnection.getConnection();
+         System.out.println("===== ATM LOGIN =====");
+         System.out.print("Enter Account Number: ");
+         String var2 = sc.nextLine();
+         System.out.print("Enter PIN: ");
+         String var3 = sc.nextLine();
+         String var4 = "SELECT * FROM users WHERE account_no=? AND pin=?";
+         PreparedStatement var5 = var1.prepareStatement(var4);
+         var5.setString(1, var2);
+         var5.setString(2, var3);
+         ResultSet var6 = var5.executeQuery();
+         if (var6.next()) {
+            double var7 = var6.getDouble("balance");
+            System.out.println("Login Successful!");
+
+            while(true) {
+               System.out.println("\n===== ATM MENU =====");
+               System.out.println("1. Check Balance");
+               System.out.println("2. Deposit");
+               System.out.println("3. Withdraw");
+               System.out.println("4. Exit");
+               System.out.print("Choose Option: ");
+               int var9 = sc.nextInt();
+               switch (var9) {
+                  case 1:
+                     System.out.println("Current Balance: " + var7);
+                     break;
+                  case 2:
+                     System.out.print("Enter Deposit Amount: ");
+                     double var10 = sc.nextDouble();
+                     var7 += var10;
+                     PreparedStatement var12 = var1.prepareStatement("UPDATE users SET balance=? WHERE account_no=?");
+                     var12.setDouble(1, var7);
+                     var12.setString(2, var2);
+                     var12.executeUpdate();
+                     System.out.println("Amount Deposited Successfully!");
+                     break;
+                  case 3:
+                     System.out.print("Enter Withdraw Amount: ");
+                     double var13 = sc.nextDouble();
+                     if (var13 > var7) {
+                        System.out.println("Insufficient Balance!");
+                     } else {
+                        var7 -= var13;
+                        PreparedStatement var15 = var1.prepareStatement("UPDATE users SET balance=? WHERE account_no=?");
+                        var15.setDouble(1, var7);
+                        var15.setString(2, var2);
+                        var15.executeUpdate();
+                        System.out.println("Withdraw Successful!");
+                     }
+                     break;
+                  case 4:
+                     System.out.println("Thank You!");
+                     System.exit(0);
+                  default:
+                     System.out.println("Invalid Option");
+               }
+            }
+         }
+
+         System.out.println("Invalid Account Number or PIN!");
+      } catch (Exception var16) {
+         var16.printStackTrace();
+      }
+
+   }
+
+   static {
+      sc = new Scanner(System.in);
+   }
+}
