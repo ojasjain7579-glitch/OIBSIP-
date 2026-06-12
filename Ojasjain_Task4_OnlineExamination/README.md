@@ -21,7 +21,7 @@ This project is developed as part of Oasis Infobyte Java Development Internship 
 
 ## Project Structure
 
-AnjaliThakur_Task4_OnlineExamination
+OjasJain_Task4_OnlineExamination
 
 ├── backend
 │   └── OnlineExam.java
